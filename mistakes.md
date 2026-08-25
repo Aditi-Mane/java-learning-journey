@@ -59,3 +59,32 @@ Local variables DON'T get default values. Example:
 | :--- | :--- | :--- |
 | `sc.nextInt()` | User types `25` + Enter (`25\n`) | `age = 25` (leaves `\n` in buffer) |
 | `sc.nextLine()` | Sees `\n` instantly, consumes it | `name = ""` (empty string) |
+
+4. If-Else Condition Ordering Mistake,
+I wrote the conditions in this order:
+
+```java
+if (num % 3 == 0) {
+    // Divisible by 3
+} else if (num % 5 == 0) {
+    // Divisible by 5
+} else if (num % 3 == 0 && num % 5 == 0) {
+    // Divisible by both 3 and 5
+}
+```
+
+Key Rule to Remember
+
+> In an `if → else if → else` chain, put more specific conditions before more general conditions.
+
+Example
+
+```text
+Both 3 AND 5?
+      ↓
+Divisible by 3?
+      ↓
+Divisible by 5?
+      ↓
+Neither?
+```

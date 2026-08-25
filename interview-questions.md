@@ -49,3 +49,18 @@ Primitive data types store the actual value directly, whereas non-primitive data
 17. Scanner class → Scanner class is a predefined class in java.util that is used to read input from the keyboard, files or other input streams. Example: Scanner sc = new Scanner(System.in); String name = sc.nextLine();
 18. Buffered Reader → Buffered Reader is a class in java.io, that is used to read text efficiently by buffering characters, it is faster than Scanner since it doesn’t parse input into different data types automatically. Example: BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); String name = br.readLine();
 ---
+# 4. Operators, If-Else
+
+1. Arithmetic operators → +,-,%,*,/
+2. Relational operators → >,<,< =, > =, ==, ! =
+3. Logical operators → && , || , !
+4. Assignment operators → +=, -=, =, /=, %=
+5. Unary operators → ++, - -, +, -, !
+6. Increment vs decrement → a++(postfix) → value is used first, then the increment is done, ++a (prefix) → first increment is done and then the value is used.
+7. Bitwise operators → operates on individual bits - & , | , ^ , >>, <<, ~
+8. Short-circuit operators → Short-circuit operators (`&&`, `||`) evaluate the second condition only when required. If the first condition already determines the final result, the second condition is not evaluated, saving computation time and sometimes preventing runtime errors (e.g., division by zero).
+9. Ternary operator → condition? if true : if false;
+10. if vs switch → `if` is used to check different conditions, whereas `switch` is used when one variable has multiple possible values on the basis of different conditions.
+11. Switch expression (Java 14+) → switch(variable){ case 1 → statement;  default → statement};
+12. Fall through → When a `break` statement is omitted in a `switch`, execution continues into the next case, not applicable in newer java (14+) versions.
+13. Break statement in switch → terminates the switch statement, and prevents execution into the next case.
