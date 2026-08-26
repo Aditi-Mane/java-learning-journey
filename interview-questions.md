@@ -64,3 +64,37 @@ Primitive data types store the actual value directly, whereas non-primitive data
 11. Switch expression (Java 14+) → switch(variable){ case 1 → statement;  default → statement};
 12. Fall through → When a `break` statement is omitted in a `switch`, execution continues into the next case, not applicable in newer java (14+) versions.
 13. Break statement in switch → terminates the switch statement, and prevents execution into the next case.
+---
+# 5. Loops & Arrays
+
+1. while loop → while(condition){ statement} → Executes the statements repeatedly until condition is false.
+2. do-while → do{ statement } while(condition); → Executed at least once, because the condition is checked after the loop body.
+3. for loop → for(initialization; condition; increment/decrement){ statement };
+4. Enhanced for loop → for( datatype var: array ) { Sout(num) }; → used to iterate over arrays/collections one element at a time.
+5. Infinite loop → while(true){statement} → creates an infinite loop
+6. break → terminates the current loop.
+7. continue → skips the current iteration and moves to the next iteration of the loop.
+8. Method declaration → access_modifier static/non static void/data_type methodName(parameters) { method body };
+9. Parameters → variables declared in the method definition that receive values when the method is called.
+10. Arguments → actual values passed during method call.
+11. Return type → specifies the data type of the value returned by the method.
+12. Method overloading → same method name, but different data type or number of parameters.
+13. Pass by value → java is always pass by value because a copy of the original value is passed onto the method, so any change of the value in the method doesn’t affect the original value.
+    ```java
+    public class PassByValue {
+        static void changeValue(int num) {
+            num = 100;
+        }
+
+        public static void main(String[] args) {
+            int x = 10;
+            changeValue(x);
+            System.out.println(x); //10
+        }
+    }
+    ```
+14. What is array? → an array is a fixed-size data structure that stores multiple values of the same data type under a single variable name.
+15. Memory allocation → memory allocation in arrays is done contiguously and the elements are accessed via. index.
+16. Array initialization → datatype[] arr_name = new datatype[size of array];
+17. 2D arrays → 2 d arrays is an array inside arrays in 2 dimensions, arranged in rows and columns.
+18. Jagged arrays → an array in which each row can have a different number of columns.

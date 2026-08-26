@@ -88,3 +88,33 @@ Divisible by 5?
       ↓
 Neither?
 ```
+5. Java Division Rule: Java determines the type of the **operation first**, then assigns the result.
+
+```text
+int / int → int
+int / double → double
+double / int → double
+```
+
+So:
+
+```java
+double avg = total / count;
+```
+
+If both are `int`, integer division happens first:
+10 / 3 → 3 → 3.0
+
+
+To get decimals:
+
+```java
+double avg = (double) total / count;
+```
+
+```text
+10 / 3 → 3.333...
+```
+
+The variable's type doesn't change how the calculation is performed.
+
