@@ -118,3 +118,60 @@ double avg = (double) total / count;
 
 The variable's type doesn't change how the calculation is performed.
 
+5. ```Arrays.toString(chars)``` is for displaying an array, meanwhile ```new String(chars)``` constructs a String from the characters.
+
+
+6. Enhanced For-Loop — Modifying Array Elements
+
+* In an enhanced `for` loop, the loop variable is a **copy of the array element**.
+* Changing the loop variable does **not** modify the original array.
+
+```java
+char[] chars = {'a', 'b', 'c'};
+
+for (char ch : chars) {
+    ch = (char)(ch - 32);  // Only changes the copy
+}
+```
+
+The array remains:
+
+```text
+[a, b, c]
+```
+
+* To actually modify the array, use an index-based loop:
+
+```java
+for (int i = 0; i < chars.length; i++) {
+    //a character internally has a numeric value
+    chars[i] = (char)(chars[i] - 32);
+}
+```
+
+**Remember:**
+`for (type x : array)` → good for **reading/traversing**
+`array[i]` → use when you need to **modify elements**
+
+
+7. String literal concatenation can be resolved at compile time,
+   while variable-based concatenation generally happens at runtime.
+   ```java 
+   //String literal concatenation happens at compile time
+   String a = "Hello";
+   String b = "Hel" + "lo";
+
+   System.out.println(a == b); //true
+   
+   //Variable based concatenation happens at runtime
+   String a = "Hello";
+   String x = "Hel";
+   String b = x + "lo";
+   
+   System.out.println(a == b); //false
+   ```
+8. After string - concatenation - ```s+20+10 = s2010``` and before string - arithmetic - ```20+10+s = 30s```
+
+9. ```s = s.replace("a", "o")``` - in this case the replace works because s is being assigned with the changed format
+
+

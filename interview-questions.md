@@ -98,3 +98,139 @@ Primitive data types store the actual value directly, whereas non-primitive data
 16. Array initialization → datatype[] arr_name = new datatype[size of array];
 17. 2D arrays → 2 d arrays is an array inside arrays in 2 dimensions, arranged in rows and columns.
 18. Jagged arrays → an array in which each row can have a different number of columns.
+---
+# 6. Strings
+
+1. What is a `String` in Java? → `String` is a class in Java used to represent a sequence of characters/text.
+
+
+2. Why is `String` immutable? → Once a String is created, its value cannot be changed. Any "modification" creates a new String.
+
+
+3. What is the String Constant Pool? → A special area in the JVM's heap where String literals are stored so that identical Strings can be reused instead of creating multiple objects.
+
+```java
+String a = "Java";
+String b = "Java";
+```
+
+Both can point to the same `"Java"` in the String Pool.
+
+4. What is the difference between String literals and `new String()`? → A String literal like `"Java"` can use the String Pool, while `new String("Java")` creates a new String object.
+
+```java
+String a = "Java";
+String b = new String("Java");
+
+a == b; // false
+```
+
+5. What is the difference between `==` and `.equals()`? → `==` checks whether two references point to the same object, while `.equals()` checks whether two Strings have the same content.
+
+```java
+String a = new String("Java");
+String b = new String("Java");
+
+a == b;        // false
+a.equals(b);   // true
+```
+
+6. What is the difference between `equals()` and `equalsIgnoreCase()`?
+→ Both compare String content.
+
+* `equals()` → case-sensitive
+* `equalsIgnoreCase()` → ignores uppercase/lowercase
+
+```java
+"Java".equals("java");           // false
+"Java".equalsIgnoreCase("java"); // true
+```
+7. What is the difference between `String`, `StringBuilder`, and `StringBuffer`?
+
+* `String` → immutable
+* `StringBuilder` → mutable, faster, not thread-safe
+* `StringBuffer` → mutable, synchronized/thread-safe, generally slower
+
+8. What is the difference between mutable and immutable objects?
+**Mutable** → can be changed after creation.
+**Immutable** → cannot be changed after creation.
+
+`String` → immutable
+`StringBuilder` → mutable
+
+9. When should you use `StringBuilder` instead of `String`? → When you need to modify/append text many times.
+
+```java
+StringBuilder sb = new StringBuilder("Java");
+sb.append(" is fun");
+```
+
+It modifies the existing `StringBuilder` instead of creating a new String every time.
+
+10. What is the difference between `concat()` and the `+` operator?
+
+→ Both can join Strings and both produce a new String because Strings are immutable.
+
+`concat()` → String method
+
+```java
+s.concat("Java");
+```
+
+`+` → operator
+
+```java
+s + "Java";
+```
+
+`+` can also join Strings with other data types:
+
+```java
+"Age: " + 20
+```
+11. What is the difference between `substring()` and `subSequence()`? → Both extract a portion of a String, but they differ in their return type and the methods available on the result.
+
+* `substring()` → returns a `String`, so you can directly use String-specific methods on the result.
+* `subSequence()` → returns a `CharSequence`, which provides more general character-sequence operations.
+
+12. What is the difference between `charAt()` and `indexOf()`? →`charAt()` → gives you the character at an index.`indexOf()` → gives you the index where a character/String occurs.
+
+
+13. What is the difference between `replace()`, `replaceFirst()`, and `replaceAll()`? →`replace()` → replaces all matching characters/Strings
+→`replaceFirst()` → replaces the first match
+→`replaceAll()` → replaces all matches using regex
+
+
+14. What is the difference between `trim()` and `strip()`? → Both remove whitespace from the beginning and end.
+
+* `trim()` → older, limited whitespace rules
+* `strip()` → Unicode-aware, handles more whitespace
+
+15. What is the difference between `isEmpty()` and `isBlank()`? →`isEmpty()` → checks if length is `0`.
+
+```java
+"".isEmpty();    // true
+" ".isEmpty();   // false
+```
+
+`isBlank()` → checks if the String is empty or contains only whitespace.
+
+```java
+"".isBlank();     // true
+"   ".isBlank();  // true
+"Java".isBlank(); // false
+```
+
+16. What does the `intern()` method do?
+
+→ `intern()` gives you the String's reference from the String Pool.
+
+```java
+String a = new String("Java");
+String b = a.intern();
+String c = "Java";
+
+b == c; // true
+```
+
+`b` gets the pooled `"Java"` reference.
