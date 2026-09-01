@@ -20,7 +20,7 @@
 2. Comments in Java → multiline comments are given as /* */, for documentation /** */, for single line comments //
 3. Identifiers → Identifiers are the names given to variables, methods, classes, interfaces, packages, and other program elements.
 4. Keywords → keywords are reserved words in java that cannot be used as variable/method names
-5. Naming conventions → class: PascalCase (Student), variable & method: camelCase (studentName), constant: UPPER_SNAKE_CASE (MAX_SIZE), package: lowercase (com.company.project)
+5. Naming conventions → class: PascalCase (student.management.Student), variable & method: camelCase (studentName), constant: UPPER_SNAKE_CASE (MAX_SIZE), package: lowercase (com.company.project)
 6. Why String is not primitive? → String is not primitive because it is a class in Java. Since it is a class, String objects can have methods and behavior such as `length()`, `substring()`, and `charAt()`, unlike primitive data types.
 7. Difference between source file and class file → source file has a .java extension, and it is written in a high level language, class file has a .class extension and it contains bytecode
 8. Can we have multiple classes in one file? → Yes, a Java source file can contain multiple classes, but only one public class is allowed, and its name must match the filename.
@@ -234,3 +234,60 @@ b == c; // true
 ```
 
 `b` gets the pooled `"Java"` reference.
+
+---
+# 7. Classes & Objects
+
+1. What is OOP? → refers to object oriented programming, uses objects and classes instead of focusing on the procedure, a more modular approach.
+2. What is a class? → a class is a blueprint/template for creating an object.
+3. What is an object? → an object is an instance of a class.
+4. Difference between class and object → a class is a blueprint, while an object is a real instance created from that blueprint.
+5. Constructor → a constructor is used to initialize an object's instance fields and runs automatically when that object is created. It has the same name as the class and has no return type.
+6. Default constructor → A default constructor is a no-argument constructor automatically provided by the compiler only when no constructor is explicitly defined.
+7. Parameterized constructor → a constructor that accepts one or more parameters to initialize an object with specific values.
+8. Copy constructor (Java concept) → a constructor that creates a new object by copying the values of another object of the same class. Example:
+
+```
+student.management.Student(student.management.Student s) {
+    this.name = s.name;
+    this.age = s.age;
+}
+```
+
+9. this keyword → “this” refers to the current object.
+2. static keyword → the static keyword signifies that the member belongs to the class rather than an object, example being that static variables are variables that are shared by all objects of the class, and static method is a method which does not need object creation, it can be called directly by the class.
+3. Instance variables → instance variables are variables that belong to the object, meaning that every object has their own copy of these instance variables.
+4. Local variables → local variables are variables that have a scope only inside a block
+5. Static variables → Variables  that belong to the class and are shared by all objects of the class.
+6. Object creation → ClassName obj_ref = new ClassName(); here `new` allocates memory for the object and invokes its constructor.
+7. Garbage Collection (basics) → Garbage Collection is the automatic process of identifying and removing objects that are no longer reachable, freeing heap memory.
+8. finalize() → `finalize()` was a method that the GC could invoke before reclaiming the memory of an unreachable object, but it was unreliable and has been deprecated for removal. In modern java, try with resources is used.
+9. Packages → namespace which contains a collection of classes and interfaces, to avoid collision of class names.
+10. Can constructor be private? → yes (Singleton pattern / restricting object creation).
+11. Constructor overloading → constructor overloading means having several constructors with different parameters in terms of data type or number of parameters, each signifying a different operation.
+12. Can constructor be final? → no, because constructor overriding is not possible anyways.
+13. Can constructor be static? → no, because a constructor’s purpose is to initialize values for an object, but static members belong to the class.
+14. Why constructor has no return type? → constructor has no return type because it does not return anything but is used for initializing an object.
+15. Anonymous object → an object created without storing its reference in a variable Eg: new C()
+16. this() vs super() → `this()` is used to call another constructor in the same class, while `super()` is used to call the parent class constructor.
+---
+# 8. Encapsulation
+1. What is encapsulation in Java? → Encapsulation is the wrapping up of data and methods into a single unit, while controlling access to the data.
+
+2. Why is encapsulation important? → Encapsulation is important for controlling data accessibility and performing validation on data.
+
+3. How do you achieve encapsulation in Java? → Encapsulation can be achieved using access modifiers, getters, and setters.
+
+4. What are the advantages of encapsulation? → It allows controlled access to private data, such as making it read-only using getters, and allows validation before modifying data.
+
+5. What is data hiding? How is it different from encapsulation? → Data hiding means restricting direct access to internal data, while encapsulation is the process of bundling data and methods together and controlling access to them.
+
+6. Can encapsulation exist without inheritance? → Yes, encapsulation can exist without inheritance using access modifiers, getters, and setters.
+
+7. Why are fields usually declared `private`? → Fields are declared `private` to prevent direct external access and allow controlled access through methods like getters and setters.
+
+8. Can encapsulation improve security? → Yes, encapsulation can improve security by restricting direct access to data and controlling how it is accessed or modified.
+
+9. How does encapsulation support maintainability? → It supports maintainability by controlling access to data and allowing internal implementation to be changed without affecting external code.
+
+10. Give a real-world example of encapsulation. → A banking application is an example where the account balance is private and can only be viewed through a getter, while changes to it are controlled through methods with proper validation.
