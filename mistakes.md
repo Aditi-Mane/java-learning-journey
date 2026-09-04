@@ -175,3 +175,32 @@ for (int i = 0; i < chars.length; i++) {
 9. ```s = s.replace("a", "o")``` - in this case the replace works because s is being assigned with the changed format
 
 
+10. A child object contains the inherited state of its parent, so the parent constructor must run to initialize that parent state.
+
+> Think of `super` as: “Parent, you handle your part first, I’ll handle mine.”
+
+Whenever a child class needs something from its parent, use `super`.
+
+```text
+Child constructor
+      ↓
+super(...) → Parent handles parent stuff
+      ↓
+Child handles its own stuff
+```
+
+The 3 uses
+
+```java
+super(...)         // Parent, run your constructor.
+super.method()     // Parent, run your version of this method.
+super.variable     // Parent, give me your variable.
+```
+
+One important thing: You don't always have to write `super()`.
+If you don't specify a parent constructor, Java automatically tries to call: super();
+> "super" specifically refers to the immediate parent class.
+If there is no naming conflict, you usually don't need super.
+
+11. Override `equals()` and `hashCode()` when you want two different objects to be considered equal based on their data/content. `For example`: If you want two Students with the same ID to be considered the same student.
+Incase of Strings, we don't need to do it because it has already overridden equals.

@@ -291,3 +291,142 @@ student.management.Student(student.management.Student s) {
 9. How does encapsulation support maintainability? → It supports maintainability by controlling access to data and allowing internal implementation to be changed without affecting external code.
 
 10. Give a real-world example of encapsulation. → A banking application is an example where the account balance is private and can only be viewed through a getter, while changes to it are controlled through methods with proper validation.
+---
+# 9. Inheritance
+1. What is inheritance? → subclass inherits properties of a super class
+2. What are the advantages of inheritance? → no repetition of variables, subclass automatically takes super class properties.
+3. What are the different types of inheritance in Java? → the types include single level, multi level, hierarchical.
+4. Why doesn't Java support multiple inheritance with classes? → Java doesn't support multiple inheritance through classes because it can create ambiguity, such as the diamond problem. However, Java supports multiple inheritance through interfaces because a class can implement multiple interfaces. If multiple interfaces provide conflicting default methods, the implementing class must resolve the conflict by overriding the method.
+5. What is the difference between `extends` and `implements`? → `extends` is used when a class extends another class, or when an interface extends another interface. `implements` is used when a class implements one or more interfaces.
+6. Can constructors be inherited? → No. Constructors are not inherited. Each class has its own constructors. However, a subclass constructor can invoke a superclass constructor using `super()`.
+7. Can private members be inherited? → Private members are not directly accessible by a subclass. They belong to the superclass and can only be accessed indirectly through accessible methods such as getters or other public/protected methods.
+8. Can static methods be overridden? → Static methods cannot be overridden because they are associated with the class rather than the object. If a child class defines a static method with the same signature as the parent, it is called method hiding, not method overriding.
+9. What is the difference between IS-A and HAS-A relationships?
+
+IS-A → Inheritance → It means one class is a type of another class.
+
+```
+class Animal { }
+class Dog extends Animal { }
+```
+
+example: A `Dog` IS-A `Animal`.
+
+HAS-A → Composition/Aggregation
+
+It means one class contains or uses another class.
+
+```
+class Engine { }
+
+class Car {
+	Engine engine;
+}
+```
+
+example: A `Car` HAS-A `Engine`.
+
+10. What is composition? When should you prefer composition over inheritance?
+
+**Composition** is a design approach where a class **contains an object of another class** to reuse its functionality. It represents a **HAS-A relationship**.
+
+```java
+class Engine {
+    void start() {
+        System.out.println("Engine starts");
+    }
+}
+
+class Car {
+    private Engine engine = new Engine();
+
+    void startCar() {
+        engine.start();
+    }
+}
+```
+
+Here, `Car` HAS-A `Engine`.
+
+We should prefer composition over inheritance when we want more flexibility, easier extension, and loose coupling. With composition, you can change or replace the contained object without changing the main class.
+
+For example, a `Car` can use different types of engines:
+
+```java
+Car petrolCar = new Car(new PetrolEngine());
+Car electricCar = new Car(new ElectricEngine());
+```
+
+#### Object Class
+
+1. Why is `Object` the root of the Java class hierarchy? → because every Java class inherits from it, providing common behavior to all objects.
+
+2. Which methods are inherited from `Object`? → The commonly known methods are:
+
+```
+equals()
+hashCode()
+toString()
+getClass()
+clone()
+finalize()      // deprecated/obsolete
+wait()
+notify()
+notifyAll()
+```
+
+3. What are the commonly overridden methods of `Object`? → The most commonly overridden are:        1. equals()               2. hashCode()                 3. toString()
+
+4. What is the purpose of `toString()`? → returns a String representation of an object.
+
+5. What is the purpose of `clone()`? →  used to create a copy of an existing object. By default, it performs a shallow copy (creation of a new object, but nested/reference objects are shared between the original and the copy)
+
+```
+Student s1 = new Student();
+Student s2 = (Student) s1.clone();
+```
+
+6. What is the purpose of `finalize()`? → `finalize()` was intended to be called by the garbage collector before an object was removed from memory because it was no longer reachable, allowing cleanup of resources. Modern Java uses mechanisms such as **try-with-resources** for resource cleanup.
+
+7. What are `wait()`, `notify()`, and `notifyAll()`? → methods used for thread communication/synchronization.
+
+8. Why are `wait()` and `notify()` in `Object` rather than `Thread`?→ `wait()` and `notify()` are defined in `Object` because synchronization is associated with an object's monitor, and any object can be used as a synchronization lock.
+
+9. What does `getClass()` return?→ `getClass()` returns the runtime class of an object.
+
+```
+Student s = new Student();
+System.out.println(s.getClass()); // class Student
+```
+
+Super-short revision
+
+```
+Object
+│
+├── equals()      → compares objects
+├── hashCode()    → returns hash value
+├── toString()    → String representation
+├── getClass()    → runtime class
+├── clone()       → copies object
+├── finalize()    → old cleanup mechanism (deprecated)
+├── wait()        → waits
+├── notify()      → wakes one
+└── notifyAll()   → wakes all
+```
+
+`equals()` + `hashCode()` → object equality
+
+`wait()` + `notify()` + `notifyAll()` → thread communication
+
+`getClass()` → runtime type information
+
+#### equals() and hashCode()
+
+1. Why should `equals()` and `hashCode()` be overridden together? → because they have a contract that states if two objects are equal then they must have equal hash codes, the vice versa is however not true.
+2. What happens if you override `equals()` but not `hashCode()`? → We break the contract. Two logically equal objects may have different hash codes, causing problems with `HashMap` and `HashSet`. As a result, collections may treat equal objects as different.
+3. What happens if you override `hashCode()` but not `equals()`? → We don't necessarily break the `hashCode()` contract, but the objects may still be considered unequal.
+4. Why is `hashCode()` important in `HashMap` and `HashSet`? → `hashCode()` helps determine where an object should be stored/searched.
+5. What is a hash collision?  → when two objects having the same hash code are unequal.
+6. How does `HashMap` use `equals()` and `hashCode()` internally? → When `put()` is called, `HashMap` uses the key's `hashCode()` to determine the appropriate bucket. If the bucket contains existing entries, it uses `equals()` to check whether the key already exists. If an equal key is found, its value is updated; otherwise, the new key-value pair is added to that bucket.
+7. How do you properly implement `equals()` and `hashCode()`? → Override both `equals()` and `hashCode()` using the **same fields** so that equal objects always produce the same hash code.
