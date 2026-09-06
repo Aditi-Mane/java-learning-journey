@@ -430,3 +430,258 @@ Object
 5. What is a hash collision?  → when two objects having the same hash code are unequal.
 6. How does `HashMap` use `equals()` and `hashCode()` internally? → When `put()` is called, `HashMap` uses the key's `hashCode()` to determine the appropriate bucket. If the bucket contains existing entries, it uses `equals()` to check whether the key already exists. If an equal key is found, its value is updated; otherwise, the new key-value pair is added to that bucket.
 7. How do you properly implement `equals()` and `hashCode()`? → Override both `equals()` and `hashCode()` using the **same fields** so that equal objects always produce the same hash code.
+---
+# 10. Abstraction
+ 1. What is abstraction?
+
+**Abstraction means hiding implementation details and exposing only what an object does, not how it does it.**
+
+Example: You call `withdraw()` without needing to know how the bank internally processes it.
+
+
+2. How is abstraction achieved in Java?
+
+Abstraction is mainly achieved through:
+
+- **Abstract classes**
+- **Interfaces**
+
+Abstract methods are used when we want subclasses/implementing classes to provide their own implementation.
+
+3. What is an abstract class?
+
+An abstract class is a class that **cannot be directly instantiated** and can contain both:
+
+- Abstract methods
+- Concrete methods
+
+```java
+abstract class Animal {
+
+    abstract void sound();
+
+    void sleep() {
+        System.out.println("Sleeping");
+    }
+}
+```
+4. Why can't we instantiate an abstract class?
+
+Because an abstract class can contain **incomplete behavior**, represented by abstract methods.
+
+Therefore, Java does not allow us to create a direct object of an abstract class.
+
+```
+Animal a = new Animal();
+```
+
+But we can create an object of a concrete subclass:
+
+```
+Animal a = new Dog();
+```
+
+
+5. Can an abstract class have a constructor? -> Yes, 
+Even though we cannot directly instantiate an abstract class, its constructor is called when a subclass object is created.
+
+It is commonly used to initialize common state.
+
+```java
+abstract class Animal {
+    Animal(String name) {
+        System.out.println(name);
+    }
+}
+
+class Dog extends Animal {
+    Dog(String name) {
+        super(name);
+    }
+}
+```
+
+
+6. Can an abstract class have concrete methods?
+Yes. An abstract class can contain both abstract and concrete methods.
+The concrete method can provide behavior shared by all subclasses.
+
+
+7. Can an abstract class have instance variables?
+Yes. An abstract class can have instance variables just like a normal class.
+
+
+8. Can an abstract class have no abstract methods? Yes.
+An abstract class does not have to contain an abstract method.
+
+
+9. What is an abstract method?
+An abstract method is a method **without a body**.
+It tells subclasses that they must provide the implementation.
+
+
+10. What is an interface?
+
+An interface is primarily a **contract or capability** that defines what a class should be able to do.
+
+
+11. What is the difference between an abstract class and an interface?
+
+| Abstract Class | Interface |
+| --- | --- |
+| Represents a common base/identity | Represents a capability/contract |
+| Can have instance variables | Variables are implicitly `public static final` |
+| Can have constructors | Cannot have constructors |
+| Can have abstract methods | Can have abstract methods |
+| Can have concrete methods | Can have `default`, `static`, and `private` methods |
+| A class can extend only one class | A class can implement multiple interfaces |
+
+Easy way to remember
+
+> **Abstract class → "IS-A"**
+>
+>
+> **Interface → "CAN-DO"**
+>
+
+Example:
+
+```java
+class SavingsAccount extends BankAccount 
+        implements Withdrawable,Transferable
+```
+
+Here:
+
+- `BankAccount` → what it **is**
+- `Withdrawable` → what it **can do**
+- `Transferable` → what it **can do**
+
+
+12. When should you use an abstract class instead of an interface?
+
+Use an abstract class when:
+
+Multiple classes share:
+
+- Common state
+- Common identity
+- Common implementation
+
+Example:
+
+```java
+abstract class BankAccount {
+    private String accountNumber;
+    private double balance;
+    void deposit(double amount) {
+        balance + = amount;
+    }
+    abstract double calculateInterest();
+}
+```
+Use an interface when:
+
+You want to define:
+
+- A capability
+- A contract
+- Behavior that can apply to otherwise unrelated classes
+
+Example:
+
+```java
+interface Withdrawable {
+    boolean withdraw(double amount);
+}
+```
+Simple rule
+
+> **Abstract class = common foundation**
+>
+>
+> **Interface = capability/contract**
+>
+
+---
+
+13. What are default methods in an interface?
+
+A `default` method is an interface method that **has a body and provides a default implementation**.
+
+```java
+interface Payment {
+    default void printReceipt() {
+        System.out.println("Receipt generated");
+    }
+}
+```
+
+An implementing class can either:
+
+- Use the default implementation
+- Override it with its own implementation
+
+
+14. What are static and private methods in interfaces?
+
+-> Static methods: A static method belongs to the **interface itself**.
+It is called using the interface name.
+
+```
+Payment.gatewayInfo(); //where Payment is name of the interface
+```
+
+A static interface method is not overridden like an instance method.
+
+-> Private methods
+A private method is a **helper method used internally by the interface**.
+It is useful for avoiding duplicate code between default methods.
+
+```java
+interface Payment {
+    private void log() {
+        System.out.println("Logging...");
+    }
+    default void pay() {
+        log();
+    }
+}
+```
+
+Implementing classes cannot directly access the private method.
+
+
+**Abstraction Cheat Sheet**
+
+| Concept | Remember |
+| --- | --- |
+| Abstraction | Hide **how**, expose **what** |
+| Abstract class | Common base + shared state/behavior |
+| Abstract method | Child must provide implementation |
+| Interface | Capability / contract |
+| `default` method | Interface provides a ready-made implementation |
+| `static` interface method | Belongs to the interface |
+| `private` interface method | Internal helper for the interface |
+| Multiple interfaces | A class can implement multiple interfaces |
+| Abstract class + interface | Common foundation + additional capabilities |
+
+
+Core Mental Model
+
+```
+                    ABSTRACTION
+                         |
+          +--------------+--------------+
+          |                             |
+    Abstract Class                  Interface
+          |                             |
+    "What it IS"                  "What it CAN DO"
+          |                             |
+ Common state + behavior          Capability / Contract
+          |                             |
+    Abstract methods             Abstract methods
+    Concrete methods             Default methods
+    Constructors                 Static methods
+    Instance variables           Private methods
+```

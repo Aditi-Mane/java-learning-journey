@@ -204,3 +204,47 @@ If there is no naming conflict, you usually don't need super.
 
 11. Override `equals()` and `hashCode()` when you want two different objects to be considered equal based on their data/content. `For example`: If you want two Students with the same ID to be considered the same student.
 Incase of Strings, we don't need to do it because it has already overridden equals.
+
+
+12. You cannot create an object of an abstract class:
+`Animal a = new Animal();`.
+But you can use a reference:
+`Animal a = new Dog();`
+
+
+13. `default`method in an interface: Used in interface to provide a method implementation, the implementing class does not write default when inheriting or overriding that method.
+
+
+14. If a class implements two interfaces that have the same default method, the class must override that method to resolve the conflict. The interface reference does not choose which default implementation to use.
+```java
+interface A {
+    default void show() {
+        System.out.println("A");
+    }
+}
+
+interface B {
+    default void show() {
+        System.out.println("B");
+    }
+}
+
+class C implements A, B {
+
+    @Override
+    public void show() {
+        A.super.show();   // explicitly choose A's default
+    }
+}
+/*A + B have same default method → C MUST override → 
+C decides which implementation to use.*/
+```
+
+
+15. Use an abstract class when: shared identity + shared code
+
+>"The classes are fundamentally the same kind of thing, and they should share some common state/behavior."
+
+Use an interface when: shared capability
+
+>"The classes may be completely different things, but they share a capability/contract."
