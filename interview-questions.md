@@ -603,7 +603,6 @@ Simple rule
 > **Interface = capability/contract**
 >
 
----
 
 13. What are default methods in an interface?
 
@@ -684,4 +683,148 @@ Core Mental Model
     Concrete methods             Default methods
     Constructors                 Static methods
     Instance variables           Private methods
+```
+---
+# 11. Polymorphism
+1. What is polymorphism? → **Polymorphism means "one name, many forms."** In Java, the same method name can behave differently depending on the conditions.
+
+
+2. What are the types of polymorphism in Java? → There are two main types:
+
+- **Compile-time polymorphism** → Method overloading
+- **Runtime polymorphism** → Method overriding
+
+
+3. What is compile-time polymorphism? → It is where the compiler decides which overloaded method to call based on the arguments. This is achieved through method overloading.
+
+
+4. What is runtime polymorphism? → It is where the method to be executed is determined at runtime based on the actual object. It's achieved through method overriding.
+
+```java
+Payment p = new UPIPayment();
+p.pay();// UPIPayment's pay()
+```
+
+
+5. What is method overloading? → Method overloading means having **multiple methods with the same name but different parameter lists**.
+
+```java
+add(int,int)
+add(int,int,int)
+add(double,double)
+```
+
+The return type alone cannot be used for overloading.
+
+
+6. What is method overriding? → Overriding is when a child class provides its **own implementation of a method inherited from the parent**.
+
+```java
+class Child extends Parent {
+    @Override
+    void show() {
+	    // child's implementation
+    }
+}
+```
+
+
+7. What is Dynamic Method Dispatch? → It's the mechanism where Java decides **at runtime which overridden method to execute based on the actual object**.
+
+```java
+Parent p = new Child();
+p.show(); // Child's show()
+```
+
+It's essentially how Java implements runtime polymorphism.
+
+
+8. Why do we use a parent reference with a child object? → It allows us to write flexible and loosely coupled code.
+
+```java
+Payment p = new UPIPayment();
+```
+
+Now we can replace `UPIPayment` with another `Payment` implementation without changing the code that uses `p`.
+
+
+9. Can static methods be overridden? → **No.** Static methods belong to the class, not the object. If a child defines a static method with the same signature, it is **method hiding**, not overriding.
+
+
+10. Can fields be overridden? → **No.** Fields are not polymorphic.
+
+```java
+Payment p = new CashPayment();
+System.out.println(p.cost); //parent's cost value accessed
+```
+
+The field is selected based on the **reference type**, so `Payment.cost` is accessed.
+
+
+11. Can a child-specific method be called using a parent reference? → **No**, not directly.
+
+```java
+Payment p = new CashPayment();
+p.paymentStatus(); //paymentStatus() is available only in CashPayment
+```
+
+Even though the actual object is `CashPayment`, the compiler only allows methods available through the `Payment` reference.
+
+You'd need casting: `((CashPayment)p).paymentStatus();`
+
+
+12. Can constructors be overridden? → **No.** Constructors aren't inherited, so they cannot be overridden. However, when creating a child object, the **parent constructor executes first**, followed by the child constructor.
+
+
+13. Can a `final` method be overridden? → A `final` method cannot be overridden by a child class.
+
+
+14. Can method overloading happen between parent and child classes? → **Yes.** For example:
+
+```java
+class Parent {
+	void show(int x) {}
+}
+class Child extends Parent {
+	void show(String x) {}
+}
+```
+
+These are overloaded because their parameter lists are different.
+
+
+15. What's the difference between overloading and overriding?
+
+| Overloading | Overriding |
+| --- | --- |
+| Same class usually | Parent + child |
+| Different parameters | Same parameters |
+| Compile-time | Runtime |
+| Compiler decides | Actual object decides |
+| No inheritance required | Inheritance required |
+
+
+16. What is method hiding? → **Method hiding** occurs when a child class defines a **static method with the same signature** as a static method in its parent class. Since static methods belong to the **class**, they are resolved at **compile time** based on the reference/class type. They are **not overridden**.
+
+Example
+
+```java
+class Parent {
+	static void show() {
+		System.out.println("Parent");
+  }
+}
+class Child extends Parent {
+	static void show() {
+		System.out.println("Child");
+	}
+}
+class Main {
+	public static void main(String[]args) {
+        Parent p=new Child();
+        p.show();       // Parent
+        Child.show();   // Child
+	    Parent.show();  // Parent
+    }
+}
 ```
