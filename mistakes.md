@@ -248,3 +248,12 @@ C decides which implementation to use.*/
 Use an interface when: shared capability
 
 >"The classes may be completely different things, but they share a capability/contract."
+
+
+16. Incase of the `ArithmeticException` error, datatype matters:
+
+| Division       | Result                |
+| -------------- | --------------------- |
+| `int / 0`      | `ArithmeticException` |
+| `double / 0.0` | `Infinity`            |
+| `float / 0.0f` | `Infinity`            |

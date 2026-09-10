@@ -828,3 +828,166 @@ class Main {
     }
 }
 ```
+---
+# 12. Exception Handling
+1. What is exception handling in Java?
+
+**Answer:** Exception handling is a mechanism for handling runtime/exceptional situations so the program can respond gracefully instead of terminating unexpectedly.
+
+2. What is the difference between `throw` and `throws`? → `throw` → manually throws an exception and `try-catch` → handles the thrown exception. `throw` — Syntax
+
+```java
+if(condition){
+    throw new ExceptionType("error message");
+}
+```
+
+The exception should be **handled using `try-catch`**, usually in the calling method such as `main()`:
+
+```java
+public static void main(String[]args){
+	try{
+            account.withdraw(6000);
+	}catch(IllegalArgumentException e){
+            System.out.println(e.getMessage());
+	}
+}
+```
+
+Similarly with `throws` we use it as an indicator that a method may throw an exception which is handled in the calling method mostly the main method.
+
+```
+throw  → actually throws an exception
+throws → declares that a method may throw an exception
+```
+
+```java
+void readFile() throws IOException {
+	//may throw an exception
+}
+```
+
+3. What is the difference between checked and unchecked exceptions?
+> **Checked:** Compiler forces you to handle or declare them, extends Exception.
+
+> **Unchecked:** Compiler doesn't force you to handle them, extends RuntimeException.
+
+In checked exceptions it is necessary to use either `throws` or `try-catch` however in unchecked exceptions it is not necessary to do either of those, but we can use `throw` with `try-catch` to give our custom statements.
+
+4. What is the difference between `Exception` and `Error`?
+
+- `Exception` → problems that an application can generally handle.
+- `Error` → serious JVM/system-level problems that applications generally shouldn't try to handle.
+
+Examples:
+
+```
+Exception → IOException
+Error     → OutOfMemoryError
+```
+
+5. What is the purpose of the `finally` block? → `finally` is mainly used for **cleanup code** that should execute whether an exception occurs or not.
+
+
+6. Can we have `try` without `catch`? → Yes, if you have a `finally` block.
+
+```java
+try {
+    // code
+} finally {
+    // cleanup
+}
+```
+
+You can also use **try-with-resources** without a `catch` or `finally`.
+
+7. Can we have multiple `catch` blocks? → Yes.
+
+```java
+try {// code
+}catch (ArithmeticException e) {// ...
+}catch (NullPointerException e) {// ...
+}catch (Exception e) {// ...
+}
+```
+
+The **first matching catch block** is executed. Also, more specific exceptions must come **before** their parent exception:
+
+```java
+catch (ArithmeticException e) { }
+catch (Exception e) { }
+```
+
+8. What is exception propagation? → Exception propagation means an exception **moves up the call stack** until a matching `catch` block handles it. If `methodC()` doesn't handle the exception, it can propagate to `methodB()`, then `methodA()`, etc.
+
+
+9. What is rethrowing an exception?
+
+- **Rethrowing** means catching an exception, doing something with it (like logging), and then throwing it again using `throw`.
+- The caller method can then handle the exception.
+
+```java
+try{
+    // code
+}catch(Exception e){
+    System.out.println("Logging: "+e.getMessage());
+    throw e;
+}
+```
+
+10. What is exception chaining?
+
+- **Exception chaining** means creating a new exception while keeping the **original exception as its cause**.
+- This is useful for adding meaningful context without losing the original error.
+
+```java
+try{
+    // code
+}catch(IOException e){
+    throw new RuntimeException("Failed to read user data",e);
+}
+```
+
+The original exception can be retrieved using: `e.getCause();`
+
+> **Rethrow → same exception is thrown again.**
+>
+>
+> **Chaining → new exception is thrown with the original exception attached as the cause.**
+>
+
+11. What is a custom exception? → A custom exception is an exception class that **you create yourself** for application-specific situations.
+
+```java
+class InvalidAgeException extends RuntimeException{ 
+    InvalidAgeException(String message) {
+    super(message);
+  }
+}
+```
+
+Then: `throw new InvalidAgeException("Age must be 18 or above");`
+
+12. What happens if an exception is not handled? → If no matching `catch` is found, the exception propagates up the call stack. If nobody handles it, the **JVM's default exception handler** terminates the current thread and prints the exception information/stack trace.
+
+
+13. What is try-with-resources?
+
+- `try-with-resources` is used to **automatically close resources** after use.
+- The resource must implement the **`AutoCloseable` interface** (an interface including the close() method)
+- Java automatically calls the resource's `close()` method when the `try` block finishes, **even if an exception occurs**.
+- Commonly used with **files, database connections, streams, sockets, etc.**
+
+Syntax
+
+```java
+try(ResourceType resource=new ResourceType()){
+    // use resource
+}catch(Exception e){
+    // handle exception
+}
+```
+Classes such as`BufferedReader`, `FileReader`, `FileInputStream`, `FileOutputStream`, etc. already implement an interface that ultimately extends `AutoCloseable`. BufferedReader → Reader → Closeable → AutoCloseable .
+
+
+14. Can we create a custom checked and unchecked exception? → Yes. Checked should extend `Exception` and unchecked should extend `RuntimeException`
