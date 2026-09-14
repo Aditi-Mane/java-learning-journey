@@ -257,3 +257,26 @@ Use an interface when: shared capability
 | `int / 0`      | `ArithmeticException` |
 | `double / 0.0` | `Infinity`            |
 | `float / 0.0f` | `Infinity`            |
+
+
+17. To remove an actual value instead of index element from an ArrayList: `list.remove(Integer.valueOf(30))`
+
+
+19. `Set<Integer> set = new HashSet<>(Arrays.asList(10, 20, 30, 40));` is used to declare a set with existing elements
+
+
+20. `TreeSet` provides automatic sorting and duplicates removal, to get the first element there is a `first()` method and to get the last element there is a `last()` method.
+
+
+21. In a `PriorityQueue`
+```
+peek() → gives highest-priority element
+poll() → gives highest-priority element + removes it
+iterator → does NOT guarantee priority order
+```
+and to remove elements safely one by one, we use `poll()` in a `while (!queue.isEmpty())` loop.
+```text
+while (!queue.isEmpty()) {
+    System.out.println(queue.poll());
+}
+```
