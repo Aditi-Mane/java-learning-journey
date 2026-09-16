@@ -991,3 +991,249 @@ Classes such as`BufferedReader`, `FileReader`, `FileInputStream`, `FileOutput
 
 
 14. Can we create a custom checked and unchecked exception? → Yes. Checked should extend `Exception` and unchecked should extend `RuntimeException`
+---
+# 13. Collections & Generics
+
+### LIST
+
+1. What is a List in Java? → A `List` is an interface that provides us a **dynamic way to add, remove, and change elements** because its size adjusts automatically, it is an ordered collection that allows duplicate elements and usually allows `null`.
+
+
+2. What is the difference between List and ArrayList?
+
+- `List` → interface
+- `ArrayList` → class that implements `List`
+
+We usually write:
+
+```java
+List<Integer> nums = new ArrayList<>();
+```
+
+This is preferred because we can easily change the implementation later:
+
+```java
+List<Integer> nums = new LinkedList<>();
+```
+
+
+3. ArrayList vs LinkedList — what is the difference?
+
+| ArrayList | LinkedList |
+| --- | --- |
+| Uses a dynamic array internally | Uses doubly linked nodes |
+| Fast random access | Slow random access |
+| `get(index)` → fast | `get(index)` → slower |
+| Inserting/removing in the middle can be costly | Insertion/removal can be efficient when position/node is known |
+| Generally preferred for most List usage | Useful when frequent insertions/removals are central |
+
+
+4. How does ArrayList work internally? → `ArrayList` internally uses a dynamic array. If it runs out of space, a larger array is created and the elements are copied over.
+
+
+5. What is the default size of an ArrayList? → When we create an `ArrayList` the internal array is initially empty/lazily allocated. **On the first addition, the default capacity becomes 10** in the commonly used OpenJDK implementation. So don't simply say *"default size is 10."*
+
+
+6. What happens when an ArrayList reaches its capacity? → It creates a larger array and copies the existing elements into it. In the commonly used OpenJDK implementation, the capacity grows by roughly 1.5×.
+
+
+7. Can a List contain `null` values? → Yes. `ArrayList` allows multiple `null` values.
+
+```java
+List<String> list = new ArrayList<>();
+
+list.add(null);
+list.add("Java"); // [null, Java]
+```
+
+
+8. How to remove an element from an ArrayList? → You can remove using either an index/object.
+
+```java
+list.remove(2);       // removes element at index 2
+list.remove("Java");  // removes the "Java" object
+list.remove(Integer.valueOf(30))  // removes the actual object/value
+```
+
+
+9. Difference between `add()` and `set()`?
+
+`add()` adds a new element.
+
+```java
+list.add("Java");
+```
+
+`set()` replaces an existing element. (Note: does not increase the size)
+
+```java
+list.set(0, "Python"); //Python will replace element at 0 position
+```
+
+
+10. How do you sort an ArrayList? → Use `Collections.sort(list)`
+
+
+11. ArrayList vs Vector — what is the difference? → Both are dynamic arrays, but:
+
+- `ArrayList` is not synchronized
+- `Vector` is synchronized
+- `ArrayList` is generally preferred in modern Java when synchronization isn't specifically required.
+- `Vector` is a legacy class.
+
+```java
+ArrayList<Integer> list = new ArrayList<>();
+Vector<Integer> vector = new Vector<>();
+```
+
+
+12. When would you use ArrayList instead of LinkedList? → Use `ArrayList` when you frequently need to access elements by index and don't have a strong reason to use a linked list.
+
+Example: for `list.get(500)`
+
+`ArrayList` is generally a good default choice for a `List`.
+
+**Interview line:**
+
+> "I would prefer ArrayList when random access and iteration are more important than frequent insertions/removals in the middle."
+
+### SET
+
+1. What is a Set in Java? → A `Set` is a collection that **does not allow duplicate elements**. It is an interface, with common implementations like `HashSet`, `LinkedHashSet`, and `TreeSet`.
+
+
+2. Can a Set contain `null`? → It depends on the implementation.
+
+| Set | `null` allowed? |
+| --- | --- |
+| `HashSet` | Yes, one `null` |
+| `LinkedHashSet` | Yes, one `null` |
+| `TreeSet` | Generally no |
+
+Example:
+
+```java
+HashSet<String> set = new HashSet<>();
+set.add(null);
+set.add(null); // only one null is stored
+```
+
+
+3. Difference between HashSet, LinkedHashSet and TreeSet ⭐⭐⭐
+
+|  | HashSet              | LinkedHashSet            | TreeSet            |
+| --- |----------------------|--------------------------|--------------------|
+| Order | No guaranteed order  | Insertion order          | Sorted order       |
+| Duplicates | No                   | No                       | No                 |
+| `null` | One                  | One                      | No                 |
+| Internal structure | Hash table           | Hash table + linked list | Tree               |
+| Performance | Generally fastest    | Slightly more overhead   | Generally slower   |
+| Use when | Order doesn't matter | Insertion order matters  | Sorted data needed |
+
+If you add:
+
+```
+30, 10, 20
+```
+
+You can expect:
+
+```
+HashSet       → no guaranteed order
+LinkedHashSet → 30, 10, 20
+TreeSet       → 10, 20, 30
+```
+
+4. How does HashSet work internally? ⭐ → `HashSet` internally uses a **HashMap**. When we do: `set.add("Java")` the `HashSet` essentially stores the element as a **key in an internal HashMap and t**he HashMap's values are dummy objects.
+
+```
+HashSet
+   ↓
+HashMap
+   ↓
+Java → dummy object
+```
+
+That's why hashing is important for `HashSet`.
+
+5. How does HashSet identify duplicate elements? ⭐⭐⭐ → It uses **`hashCode()` and `equals()`**.
+
+Roughly:
+
+1. `hashCode()` determines where the object should go.
+2. If another object has the same hash location, `equals()` is used to check whether they are actually equal.
+3. If `equals()` returns `true`, it is considered a duplicate.
+
+```java
+set.add("Java");
+set.add("Java");
+```
+
+The second `"Java"` is recognized as a duplicate and isn't added.
+
+**Interview line:**
+
+> "HashSet uses hashCode() first and equals() to confirm whether two objects are duplicates."
+>
+
+6. Why do we override `equals()` and `hashCode()` when using objects in HashSet? → Because `HashSet` uses them to determine whether two objects are duplicates.
+
+Example:
+
+```java
+class Student {
+    int id;
+
+    Student(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Student s = (Student) obj;
+        return this.id == s.id;
+    }
+}
+```
+
+Now:
+
+```java
+set.add(new Student(1));
+set.add(new Student(1));
+```
+
+The `Set` can recognize that both students represent the same ID.
+
+7. What happens if `equals()` and `hashCode()` are inconsistent? → The `Set` may **fail to recognize logically equal objects as duplicates**. This can result in unexpected duplicate objects being stored.
+
+Important rule:
+
+> If two objects are equal according to `equals()`, they **must have the same `hashCode()`**.
+>
+
+The reverse is not required: two objects can have the same hash code but still not be equal.
+
+8. How does TreeSet work internally? → `TreeSet` is internally backed by a **TreeMap**, which uses a **Red-Black Tree**.
+
+
+9. Can TreeSet contain `null`? → **Generally, no.**
+
+```java
+TreeSet<Integer> set = new TreeSet<>();
+
+set.add(null); // NullPointerException
+```
+
+The reason is that `TreeSet` needs to **compare elements** to maintain sorted order, and `null` cannot be naturally compared with normal values.
+
+10. What are the common operations performed on Sets? → The three common set operations are:
+
+    1. **Union**: Combines elements from both sets `a.addAll(b)`
+    2. Intersection: Keeps only elements present in **both** sets `a.retainAll(b)`
+    3. Difference: Keeps elements present in the first set but **not** the second `a.removeAll(b)`
